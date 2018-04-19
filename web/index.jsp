@@ -38,21 +38,28 @@
         <div class="limiter">
             <div class="container-login100">
                 <div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-50">
-                    <h1>Bem vindo!</h1>
-                    <ul>
-                        <li><a href="/ProjetoMedico/login">Login</a></li>
-                        <li><a href="/ProjetoMedico/listarMedicos">Lista de Médicos</a></li>
-                    </ul>
-                    <h2> Paciente </h2>
-                    <ul>           
-                        <li><a href="/ProjetoMedico/marcarConsulta">Marcar consulta</a></li>
-                        <li><a href="/ProjetoMedico/listarConsulta">Listar minhas consultas</a></li>
+                    <span class="login100-form-title p-b-15">
+                        ProjetoMedicoWEB
+                    </span>
+                        <div align="center">
+                            <a href="/ProjetoMedico/login">Login</a> |
+                            <a href="/ProjetoMedico/ListarMedicosServlet">Lista de Médicos</a>
+                        </div>
+                    <span class="login100-form-title p-t-15 p-b-15">
+                        Paciente
+                    </span>
+                        <div align="center">
+                            <a href="/ProjetoMedico/marcarConsulta">Marcar consulta</a> |
+                            <a href="/ProjetoMedico/listarConsulta">Listar minhas consultas</a>
+                        </div>
                     </ul>
 
-                    <h2> Médico </h2>
-                    <ul>
-                        <li><a href="/ProjetoMedico/listarConsulta">Listar minhas consultas</a></li>
-                    </ul>
+                    <span class="login100-form-title p-t-15 p-b-15">
+                        Médico
+                    </span>
+                    <div align="center">
+                        <a href="/ProjetoMedico/listarConsulta">Listar minhas consultas</a>
+                    </div>
                 </div>
             </div>
         </div>
