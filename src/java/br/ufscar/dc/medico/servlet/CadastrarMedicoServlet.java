@@ -42,13 +42,13 @@ public class CadastrarMedicoServlet extends HttpServlet {
             // http://commons.apache.org/beanutils/
             BeanUtils.populate(cmfb, request.getParameterMap());
             List<String> mensagens = cmfb.validar();
+            request.getSession().setAttribute("novoMedico", cmfb);
             if (mensagens == null) {
                 request.getRequestDispatcher("admin/confirmarMedico.jsp").forward(request, response);
             } else {
                 request.setAttribute("mensagens", mensagens);
                 request.getRequestDispatcher("admin/cadastroMedicoForm.jsp").forward(request, response);
             }
-            request.getSession().setAttribute("novoMedico", cmfb);
         } catch (Exception e) {
             System.out.println(e);
             System.out.println("mensagem" + e.getLocalizedMessage());
