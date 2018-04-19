@@ -5,17 +5,23 @@
  */
 package br.ufscar.dc.medico.servlet;
 
-import br.ufscar.dc.medico.bean.CadastroMedicoFormBean;
+import br.ufscar.dc.medico.bean.Consulta;
 import br.ufscar.dc.medico.bean.Medico;
+import br.ufscar.dc.medico.bean.Paciente;
 import br.ufscar.dc.medico.bean.Privilegio;
+import br.ufscar.dc.medico.dao.ConsultaDAO;
 import br.ufscar.dc.medico.dao.MedicoDAO;
 import br.ufscar.dc.medico.dao.PrivilegioDAO;
+import br.ufscar.dc.medico.dao.PacienteDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import static java.lang.System.out;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.Resource;
+import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -25,12 +31,12 @@ import javax.sql.DataSource;
 
 /**
  *
- * @author 496227
+ * @author 619680
  */
-@WebServlet(name = "GravarMedicoServlet", urlPatterns = {"/GravarMedico"})
-public class GravarMedicoServlet extends HttpServlet {
-    
-    @Resource(name =  "jdbc/MedicoDBLocal")
+@WebServlet(name = "ListarConsultasServlet", urlPatterns = {"/ListarConsultasServlet"})
+public class ListarConsultasServlet extends HttpServlet {
+        
+    @Resource(name="jdbc/MedicoDBLocal")
     DataSource dataSource;
     
     /**
@@ -42,44 +48,37 @@ public class GravarMedicoServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
-       CadastroMedicoFormBean cmfb = (CadastroMedicoFormBean) request.getSession().getAttribute("novoMedico");
-       request.getSession().removeAttribute("novoMedico");
-       
-       MedicoDAO mdao = new MedicoDAO(dataSource);
-       
-       
-        /*SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        Date dataNascimento = null;
+    
         try {
-            dataNascimento = sdf.parse(cmfb.getDataDeNascimento());
-        } catch (ParseException e) {
-            request.setAttribute("mensagem", e.getLocalizedMessage());
-            request.getRequestDispatcher("erro.jsp").forward(request, response);
-        }*/
-        try {
-            Medico m = new Medico();
-            m.setNome(cmfb.getNome());
-            m.setSenha(cmfb.getSenha());
-            m.setEspecialidade(cmfb.getEspecialidade());
-            m.setCrm(cmfb.getCrm());
-            m = mdao.gravarMedico(m);
             
-            Privilegio p = new Privilegio();
-            p.setLogin(cmfb.getCrm());
-            p.setPrivilegio(1);
-            PrivilegioDAO pdao = new PrivilegioDAO(dataSource);
-            pdao.gravarPrivilegio(p);
-            request.setAttribute("mensagem", "Médico cadastrado com successo!");
-            request.getRequestDispatcher("index.jsp").forward(request, response);
-        } catch (Exception e) {
+            Privilegio p = (Privilegio) request.getSession().getAttribute("login");
+            if (p != null) {
+                List<Consulta> consultas = null;
+                
+                ConsultaDAO cdao = new ConsultaDAO(dataSource);
+                // Usuário é Paciente
+                if (p.getPrivilegio() == 0) {                
+                   
+                    consultas = cdao.listarConsultasPaciente(p.getLogin());
+                    
+                } else if (p.getPrivilegio() == 1) {
+                    consultas = cdao.listarConsultasPaciente(p.getLogin());
+                }
+
+                request.setAttribute("consultas", consultas);
+                request.getRequestDispatcher("listaConsultas.jsp").forward(request, response);               
+            } else {
+                response.sendRedirect("/ProjetoMedico/login");
+            }
+            
+        }   catch(Exception e) {    
             e.printStackTrace();
             request.setAttribute("mensagem", e.getLocalizedMessage());
-            request.getRequestDispatcher("erro.jsp").forward(request, response);
-        }
+            request.getRequestDispatcher("500.html").forward(request, response);
+        };
     }
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

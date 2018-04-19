@@ -11,7 +11,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
@@ -29,6 +31,15 @@ public class ConsultaDAO {
             + " from Consulta"
             + " where id=?";
     
+    private final static String BUSCAR_CONSULTAS_PACIENTE_SQL = "select"
+            + " cpfPaciente, crmMedico, dataConsulta"
+            + " from Consulta"
+            + " where cpfPaciente=?";
+    
+    private final static String BUSCAR_CONSULTAS_MEDICO_SQL = "select"
+            + " cpfPaciente, crmMedico, dataConsulta"
+            + " from Consulta"
+            + " where crmMedico=?";
     DataSource dataSource;
     
     public ConsultaDAO(DataSource dataSource) {
@@ -62,9 +73,47 @@ public class ConsultaDAO {
                 c.setId(rs.getInt("id"));
                 c.setCpfPaciente(rs.getString("cpfPaciente"));
                 c.setCrmMedico(rs.getString("crmMedico"));
-                c.setDataConsulta(new Date(rs.getDate("dataDeNascimento").getTime()));
+                c.setDataConsulta(new Date(rs.getDate("dataConsulta").getTime()));
                 return c;
             }
+        }
+    }
+    
+    public List<Consulta> listarConsultasPaciente(String cpf) throws SQLException, NamingException {
+        try (Connection con = dataSource.getConnection();
+                PreparedStatement ps = con.prepareStatement(BUSCAR_CONSULTA_SQL)) {
+            ps.setString(1, cpf);
+            List<Consulta> consultas = new ArrayList<>();
+            try (ResultSet rs = ps.executeQuery()) {
+                while(rs.next()) {
+                    Consulta c = new Consulta();
+                    c.setCpfPaciente(rs.getString("cpfPaciente"));
+                    c.setCrmMedico(rs.getString("crmMedico"));
+                    c.setDataConsulta(new Date(rs.getDate("dataConsulta").getTime()));
+                    consultas.add(c);
+                }
+            }
+            
+            return consultas;
+        }
+    }
+    
+    public List<Consulta> listarConsultasMedico(String crm) throws SQLException, NamingException {
+        try (Connection con = dataSource.getConnection();
+                PreparedStatement ps = con.prepareStatement(BUSCAR_CONSULTA_SQL)) {
+            ps.setString(1, crm);
+            List<Consulta> consultas = new ArrayList<>();
+            try (ResultSet rs = ps.executeQuery()) {
+                while(rs.next()) {
+                    Consulta c = new Consulta();
+                    c.setCpfPaciente(rs.getString("cpfPaciente"));
+                    c.setCrmMedico(rs.getString("crmMedico"));
+                    c.setDataConsulta(new Date(rs.getDate("dataConsulta").getTime()));
+                    consultas.add(c);
+                }
+            }
+            
+            return consultas;
         }
     }
     

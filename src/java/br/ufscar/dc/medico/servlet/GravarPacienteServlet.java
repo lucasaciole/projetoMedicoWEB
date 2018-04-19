@@ -5,15 +5,14 @@
  */
 package br.ufscar.dc.medico.servlet;
 
-import br.ufscar.dc.medico.bean.CadastroMedicoFormBean;
-import br.ufscar.dc.medico.bean.Medico;
+import br.ufscar.dc.medico.bean.CadastrarNovoPaciente;
+import br.ufscar.dc.medico.bean.Paciente;
 import br.ufscar.dc.medico.bean.Privilegio;
-import br.ufscar.dc.medico.dao.MedicoDAO;
+import br.ufscar.dc.medico.dao.PacienteDAO;
 import br.ufscar.dc.medico.dao.PrivilegioDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
@@ -22,17 +21,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
+import java.text.SimpleDateFormat;
 
 /**
  *
- * @author 496227
+ * @author 619710
  */
-@WebServlet(name = "GravarMedicoServlet", urlPatterns = {"/GravarMedico"})
-public class GravarMedicoServlet extends HttpServlet {
+@WebServlet(name = "GravarPacienteServlet", urlPatterns = {"/admin/GravarPacienteServlet"})
+public class GravarPacienteServlet extends HttpServlet {
     
-    @Resource(name =  "jdbc/MedicoDBLocal")
+    @Resource(name="jdbc/MedicoDBLocal")
     DataSource dataSource;
-    
+
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -44,39 +45,37 @@ public class GravarMedicoServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       CadastroMedicoFormBean cmfb = (CadastroMedicoFormBean) request.getSession().getAttribute("novoMedico");
-       request.getSession().removeAttribute("novoMedico");
-       
-       MedicoDAO mdao = new MedicoDAO(dataSource);
-       
-       
-        /*SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        CadastrarNovoPaciente cnp = (CadastrarNovoPaciente) request.getSession().getAttribute("novoPaciente");
+        request.getSession().removeAttribute("novoPaciente");
+        
+        PacienteDAO pdao = new PacienteDAO(dataSource);
+        
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         Date dataNascimento = null;
         try {
-            dataNascimento = sdf.parse(cmfb.getDataDeNascimento());
-        } catch (ParseException e) {
-            request.setAttribute("mensagem", e.getLocalizedMessage());
-            request.getRequestDispatcher("erro.jsp").forward(request, response);
-        }*/
-        try {
-            Medico m = new Medico();
-            m.setNome(cmfb.getNome());
-            m.setSenha(cmfb.getSenha());
-            m.setEspecialidade(cmfb.getEspecialidade());
-            m.setCrm(cmfb.getCrm());
-            m = mdao.gravarMedico(m);
+            dataNascimento = sdf.parse(cnp.getDataDeNascimento());
+        
+        response.setContentType("text/html;charset=UTF-8");
+            Paciente p = new Paciente();
+            p.setNome(cnp.getNome());
+            p.setSenha(cnp.getSenha());
+            p.setTelefone(cnp.getTelefone());
+            p.setCpf(cnp.getCpf());
+            p.setSexo(cnp.getSexo());
+            p.setDataDeNascimento(dataNascimento);
+            p = pdao.gravarPaciente(p);
             
-            Privilegio p = new Privilegio();
-            p.setLogin(cmfb.getCrm());
-            p.setPrivilegio(1);
-            PrivilegioDAO pdao = new PrivilegioDAO(dataSource);
-            pdao.gravarPrivilegio(p);
-            request.setAttribute("mensagem", "Médico cadastrado com successo!");
+            Privilegio pri = new Privilegio();
+            pri.setLogin(cnp.getCpf());
+            pri.setPrivilegio(1);
+            PrivilegioDAO pridao = new PrivilegioDAO(dataSource);
+            pridao.gravarPrivilegio(pri);
+            
+            request.setAttribute("mensagem", "Paciente cadastrado");
             request.getRequestDispatcher("index.jsp").forward(request, response);
         } catch (Exception e) {
-            e.printStackTrace();
             request.setAttribute("mensagem", e.getLocalizedMessage());
-            request.getRequestDispatcher("erro.jsp").forward(request, response);
+            request.getRequestDispatcher("500.html").forward(request, response);
         }
     }
 

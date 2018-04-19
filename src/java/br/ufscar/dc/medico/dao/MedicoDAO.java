@@ -12,7 +12,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
@@ -25,10 +27,19 @@ public class MedicoDAO {
             + " (nome, crm, senha, especialidade)"
             + " values (?,?,?,?)";
     
-    private final static String BUSCAR_MEDICO_SQL = "select"
-            + "nome, crm, senha, especialidade"
-            + "from Medico"
+    private final static String BUSCAR_MEDICO_SQL = "select "
+            + "nome, crm, senha, especialidade "
+            + "from Medico "
             + "where crm=?";
+    
+    private final static String LISTAR_MEDICOS_SQL = "select "
+            + "nome, crm, senha, especialidade "
+            + "from Medico ";
+            
+    private final static String LISTAR_MEDICOS_POR_ESPECIDADE_SQL = "select "
+            + "nome, crm, senha, especialidade "
+            + "from Medico "
+            + "where especialidade=(?)";
     
     DataSource dataSource;
     
@@ -69,5 +80,44 @@ public class MedicoDAO {
                 return m;
             }
         }
+    }
+    
+    public List<Medico> listarTodosMedicos() throws SQLException, NamingException {
+        List<Medico> ret = new ArrayList<>();
+        try (Connection con = dataSource.getConnection();
+                PreparedStatement ps = con.prepareStatement(LISTAR_MEDICOS_SQL)) {
+
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Medico m = new Medico();
+                    m.setNome(rs.getString("nome"));
+                    m.setEspecialidade(rs.getString("especialidade"));
+                    m.setCrm(rs.getString("crm"));
+                    ret.add(m);
+                }
+            }
+        }
+        return ret;
+    }
+    
+    public List<Medico> listarTodosMedicosPorEspecialidade(String especialidade) throws SQLException {
+        List<Medico> ret = new ArrayList<>();
+        try (Connection con = dataSource.getConnection();
+                PreparedStatement ps = con.prepareStatement(LISTAR_MEDICOS_POR_ESPECIDADE_SQL)) {
+
+
+            ps.setString(1, especialidade);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Medico m = new Medico();
+                    m.setNome(rs.getString("nome"));
+                    m.setEspecialidade(rs.getString("especialidade"));
+                    m.setCrm(rs.getString("crm"));
+                    ret.add(m);
+                }
+            }
+        }
+        return ret;
     }
 }
