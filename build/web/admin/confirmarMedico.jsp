@@ -16,12 +16,12 @@
         Por favor, verifique os dados do médico
         <br/><br/>
         Nome: ${sessionScope.novoMedico.nome}<br/>
-        Especilidade: ${sessionScope.novoPalpite.especialidade}<br/>
-        CRM: ${sessionScope.novoPalpite.crm}<br/>
+        Especilidade: ${sessionScope.novoMedico.especialidade}<br/>
+        CRM: ${sessionScope.novoMedico.crm}<br/>
         
         <br/>
-        <a href="GravarMedicoServlet">Confirmar</a>
-        <a href="ProjetoMedico/admin/cadastroMedicoForm.jsp">Modificar</a>
-        <a href="ProjetoMedico/admin/index.jsp">Cancelar</a>
+        <a href="GravarMedico">Confirmar</a>
+        <a href="admin/cadastroMedicoForm.jsp">Modificar</a>
+        <a href="admin/index.jsp">Cancelar</a>
     </body>
 </html>

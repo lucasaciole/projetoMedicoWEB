@@ -21,12 +21,12 @@ import javax.sql.DataSource;
  * @author 619710
  */
 public class MedicoDAO {
-    private final static String CRIAR_MEDICO_SQL = "insert into Paciente"
-            + " (nome, crm, senha, especialidade, dataDeNascimento)"
-            + " values (?,?,?,?,?)";
+    private final static String CRIAR_MEDICO_SQL = "insert into Medico"
+            + " (nome, crm, senha, especialidade)"
+            + " values (?,?,?,?)";
     
     private final static String BUSCAR_MEDICO_SQL = "select"
-            + "nome, crm, senha, especialidade, dataDeNascimento"
+            + "nome, crm, senha, especialidade"
             + "from Medico"
             + "where crm=?";
     
@@ -43,7 +43,6 @@ public class MedicoDAO {
             ps.setString(2, m.getCrm());
             ps.setString(3, m.getSenha());
             ps.setString(4, m.getEspecialidade());
-            ps.setDate(5, new java.sql.Date(m.getDataDeNascimento().getTime()));
             ps.execute();
 
             try (ResultSet rs = ps.getGeneratedKeys()) {
@@ -67,7 +66,6 @@ public class MedicoDAO {
                 m.setSenha(rs.getString("senha"));
                 m.setEspecialidade(rs.getString("especialidade"));
                 m.setCrm(rs.getString("crm"));
-                m.setDataDeNascimento(new Date(rs.getDate("dataDeNascimento").getTime()));
                 return m;
             }
         }

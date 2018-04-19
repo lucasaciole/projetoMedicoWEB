@@ -14,7 +14,6 @@ import java.util.Date;
 public class Medico {
     private int id;
     private String nome, senha, especialidade, crm;
-    private Date dataDeNascimento;
 
     public int getId() {
         return id;
@@ -54,14 +53,5 @@ public class Medico {
 
     public void setCrm(String crm) {
         this.crm = crm;
-    }
-
-    public Date getDataDeNascimento() {
-        return dataDeNascimento;
-    }
-
-    public void setDataDeNascimento(Date dataDeNascimento) {
-        this.dataDeNascimento = dataDeNascimento;
-    }
-    
+    }    
 }
