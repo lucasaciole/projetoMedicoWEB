@@ -13,6 +13,7 @@ import br.ufscar.dc.medico.dao.ConsultaDAO;
 import br.ufscar.dc.medico.dao.MedicoDAO;
 import br.ufscar.dc.medico.dao.PrivilegioDAO;
 import br.ufscar.dc.medico.dao.PacienteDAO;
+import br.ufscar.dc.medico.dao.PrivilegioDAO.PrivilegioEnum;
 import java.io.IOException;
 import java.io.PrintWriter;
 import static java.lang.System.out;
@@ -33,7 +34,7 @@ import javax.sql.DataSource;
  *
  * @author 619680
  */
-@WebServlet(name = "ListarConsultasServlet", urlPatterns = {"/ListarConsultasServlet"})
+@WebServlet(name = "ListarConsultasServlet", urlPatterns = {"/listarConsultas"})
 public class ListarConsultasServlet extends HttpServlet {
         
     @Resource(name="jdbc/MedicoDBLocal")
@@ -50,7 +51,8 @@ public class ListarConsultasServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
-    
+        response.setContentType("text/html;charset=UTF-8");
+
         try {
             
             Privilegio p = (Privilegio) request.getSession().getAttribute("login");
@@ -59,12 +61,12 @@ public class ListarConsultasServlet extends HttpServlet {
                 
                 ConsultaDAO cdao = new ConsultaDAO(dataSource);
                 // Usuário é Paciente
-                if (p.getPrivilegio() == 0) {                
+                if (p.getPrivilegio() == PrivilegioEnum.PACIENTE.getValor()) {
                    
                     consultas = cdao.listarConsultasPaciente(p.getLogin());
                     
-                } else if (p.getPrivilegio() == 1) {
-                    consultas = cdao.listarConsultasPaciente(p.getLogin());
+                } else if (p.getPrivilegio() == PrivilegioEnum.MEDICO.getValor()) {
+                    consultas = cdao.listarConsultasMedico(p.getLogin());
                 }
 
                 request.setAttribute("consultas", consultas);

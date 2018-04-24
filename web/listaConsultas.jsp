@@ -10,30 +10,25 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Lista de médicos</title>
+        <title>Minhas Consultas</title>
     </head>
     <body>
         <a href="/ProjetoMedico">Início</a>
-        <h1>Médicos</h1>
-        <form action="/ProjetoMedico/ListarMedicosServlet">
-            <label for="especialide">Especialidade:</label>
-            <input id="especialidade" type="text" name="especialidade"></input>
-            <input type="submit"></input>
-        </form>
+        <h1>Consultas</h1>
         <hr>
         <c:if test="${empty requestScope.consultas}">
-            Não há médicos cadastrados!
+            Não há consultas marcadas!
         </c:if>
         <c:if test="${!empty requestScope.consultas}">
             <table>
                 <tr>
-                    <th class="esquerda">Nome</th>
-                    <th>CRM</th>
-                    <th>Especialidade</th>
+                    <th class="esquerda">CPF Paciente</th>
+                    <th>CRM Medico</th>
+                    <th>Data da Consulta</th>
                 </tr>
                 <c:forEach items="${requestScope.consultas}" var="consulta">
                     <tr>
-                        <td class="esquerda">${consulta.cpfmPaciente}</td>
+                        <td class="esquerda">${consulta.cpfPaciente}</td>
                         <td>${consulta.crmMedico}</td>
                         <td>${consulta.dataConsulta}</td>
                     </tr>
