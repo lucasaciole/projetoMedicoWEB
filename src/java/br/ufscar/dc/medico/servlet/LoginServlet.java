@@ -49,6 +49,8 @@ public class LoginServlet extends HttpServlet {
             String senha = request.getParameter("senha");
             
             if (isNotNullOrBlank(login) && isNotNullOrBlank(senha)) {
+                String target = "";
+                
                 PrivilegioDAO pridao = new PrivilegioDAO(dataSource);
 
                 Privilegio pri = pridao.buscarPrivilegio(login);
@@ -58,7 +60,7 @@ public class LoginServlet extends HttpServlet {
 
                     if (p.getSenha().equals(senha)) {
                         request.getSession().setAttribute("login", pri);
-                        request.getRequestDispatcher("index.jsp").forward(request, response);
+                        target = "/ProjetoMedico";
                     }
 
                 } else if (pri.getPrivilegio() == PrivilegioEnum.MEDICO.getValor()) {
@@ -67,18 +69,34 @@ public class LoginServlet extends HttpServlet {
 
                     if (m.getSenha().equals(senha)) {
                         request.getSession().setAttribute("login", pri);
-                        request.getRequestDispatcher("index.jsp").forward(request, response);
+                        target = "/ProjetoMedico";
+                    } else {
+                        
                     }
                 } else if (pri.getPrivilegio() == PrivilegioEnum.ADMIN.getValor()) {
                     if (senha.equals("crocs")) {
                         request.getSession().setAttribute("login", pri);
-                        response.sendRedirect("/ProjetoMedico/admin");
+                        target = "/ProjetoMedico/admin";
                     }
                 }
 
                 System.out.println("Login realizado com sucesso: Privilegio " + pri.getPrivilegio());
                 
+                
+                String next = (String) request.getSession().getAttribute("next");
+                if (isNotNullOrBlank(next)) {
+                    request.getSession().removeAttribute("next");
+                    response.sendRedirect(next);
+                } else {
+                    response.sendRedirect(target);
+                }
+                
             } else {
+                String next = request.getParameter("next");
+                if (next != null) {
+                    request.getSession().setAttribute("next", next);
+                }
+
                 request.getRequestDispatcher("login.jsp").forward(request, response);                
                 System.out.println("Não há parametros para login. Redirecionando para formulário.");
             }
