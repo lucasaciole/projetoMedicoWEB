@@ -32,7 +32,7 @@ import javax.sql.DataSource;
  *
  * @author 496227
  */
-@WebServlet(name = "GravarMedicoServlet", urlPatterns = {"/confirmaConsulta"})
+@WebServlet(name = "GravarConsultaServlet", urlPatterns = {"/confirmaConsulta"})
 public class GravarConsultaServlet extends HttpServlet {
     
     @Resource(name =  "jdbc/MedicoDBLocal")
