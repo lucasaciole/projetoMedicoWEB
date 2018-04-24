@@ -55,8 +55,8 @@
                         Paciente
                     </span>
                         <div align="center">
-                            <a href="/ProjetoMedico/marcarConsulta">Marcar consulta</a> |
-                            <a href="/ProjetoMedico/listarConsulta">Listar minhas consultas</a>
+                            <a href="/ProjetoMedico/novaConsulta">Marcar consulta</a> |
+                            <a href="/ProjetoMedico/listarConsultas">Listar minhas consultas</a>
                         </div>
                     </ul>
 
@@ -64,7 +64,7 @@
                         Médico
                     </span>
                     <div align="center">
-                        <a href="/ProjetoMedico/listarConsulta">Listar minhas consultas</a>
+                        <a href="/ProjetoMedico/listarConsultas">Listar minhas consultas</a>
                     </div>
                 </div>
             </div>
