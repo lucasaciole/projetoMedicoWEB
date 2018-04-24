@@ -25,7 +25,7 @@ public class PacienteDAO {
             + " values (?,?,?,?,?,?)";
 
     private final static String BUSCAR_PACIENTE_SQL = "select"
-            + " nome, cpf, senha, telefone, sexo, dataDeNascimento"
+            + " id, nome, cpf, senha, telefone, sexo, dataDeNascimento"
             + " from Paciente"
             + " where cpf=?";
     
