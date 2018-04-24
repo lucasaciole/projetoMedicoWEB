@@ -48,16 +48,7 @@ public class GravarMedicoServlet extends HttpServlet {
        request.getSession().removeAttribute("novoMedico");
        
        MedicoDAO mdao = new MedicoDAO(dataSource);
-       
-       
-        /*SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        Date dataNascimento = null;
-        try {
-            dataNascimento = sdf.parse(cmfb.getDataDeNascimento());
-        } catch (ParseException e) {
-            request.setAttribute("mensagem", e.getLocalizedMessage());
-            request.getRequestDispatcher("erro.jsp").forward(request, response);
-        }*/
+              
         try {
             Medico m = new Medico();
             m.setNome(cmfb.getNome());
