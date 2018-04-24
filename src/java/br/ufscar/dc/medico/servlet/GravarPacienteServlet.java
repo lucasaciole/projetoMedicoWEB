@@ -45,6 +45,8 @@ public class GravarPacienteServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        
         CadastrarNovoPaciente cnp = (CadastrarNovoPaciente) request.getSession().getAttribute("novoPaciente");
         request.getSession().removeAttribute("novoPaciente");
         
@@ -55,7 +57,6 @@ public class GravarPacienteServlet extends HttpServlet {
         try {
             dataNascimento = sdf.parse(cnp.getDataDeNascimento());
         
-        response.setContentType("text/html;charset=UTF-8");
             Paciente p = new Paciente();
             p.setNome(cnp.getNome());
             p.setSenha(cnp.getSenha());
@@ -67,7 +68,7 @@ public class GravarPacienteServlet extends HttpServlet {
             
             Privilegio pri = new Privilegio();
             pri.setLogin(cnp.getCpf());
-            pri.setPrivilegio(1);
+            pri.setPrivilegio(0);
             PrivilegioDAO pridao = new PrivilegioDAO(dataSource);
             pridao.gravarPrivilegio(pri);
             
