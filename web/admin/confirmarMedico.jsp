@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Projeto Médico WEB</title>
     </head>
     <body>
         <h1>Novo médico</h1>
@@ -20,7 +20,7 @@
         CRM: ${sessionScope.novoMedico.crm}<br/>
         
         <br/>
-        <a href="/ProjetoMedico/GravarMedico">Confirmar</a>
+        <a href="/ProjetoMedico/admin/gravarMedico">Confirmar</a>
         <a href="/ProjetoMedico/admin/cadastroMedicoForm.jsp">Modificar</a>
         <a href="/ProjetoMedico/admin/index.jsp">Cancelar</a>
     </body>

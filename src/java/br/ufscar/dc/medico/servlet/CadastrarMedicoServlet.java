@@ -20,7 +20,7 @@ import org.apache.commons.beanutils.BeanUtils;
  *
  * @author 619680
  */
-@WebServlet(name = "CadastrarMedicoServlet", urlPatterns = {"/CadastrarMedico"})
+@WebServlet(name = "CadastrarMedicoServlet", urlPatterns = {"/admin/CadastrarMedico"})
 public class CadastrarMedicoServlet extends HttpServlet {
 
     /**
@@ -44,10 +44,10 @@ public class CadastrarMedicoServlet extends HttpServlet {
             List<String> mensagens = cmfb.validar();
             request.getSession().setAttribute("novoMedico", cmfb);
             if (mensagens == null) {
-                request.getRequestDispatcher("admin/confirmarMedico.jsp").forward(request, response);
+                request.getRequestDispatcher("/admin/confirmarMedico.jsp").forward(request, response);
             } else {
                 request.setAttribute("mensagens", mensagens);
-                request.getRequestDispatcher("admin/cadastroMedicoForm.jsp").forward(request, response);
+                request.getRequestDispatcher("/admin/cadastroMedicoForm.jsp").forward(request, response);
             }
         } catch (Exception e) {
             System.out.println(e);

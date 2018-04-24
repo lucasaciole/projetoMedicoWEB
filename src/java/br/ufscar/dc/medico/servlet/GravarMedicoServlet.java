@@ -12,9 +12,6 @@ import br.ufscar.dc.medico.dao.MedicoDAO;
 import br.ufscar.dc.medico.dao.PrivilegioDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -44,6 +41,9 @@ public class GravarMedicoServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
+        
        CadastroMedicoFormBean cmfb = (CadastroMedicoFormBean) request.getSession().getAttribute("novoMedico");
        request.getSession().removeAttribute("novoMedico");
        
@@ -55,7 +55,8 @@ public class GravarMedicoServlet extends HttpServlet {
             m.setSenha(cmfb.getSenha());
             m.setEspecialidade(cmfb.getEspecialidade());
             m.setCrm(cmfb.getCrm());
-            m = mdao.gravarMedico(m);
+            
+            mdao.gravarMedico(m);
             
             Privilegio p = new Privilegio();
             p.setLogin(cmfb.getCrm());
@@ -63,11 +64,11 @@ public class GravarMedicoServlet extends HttpServlet {
             PrivilegioDAO pdao = new PrivilegioDAO(dataSource);
             pdao.gravarPrivilegio(p);
             request.setAttribute("mensagem", "Médico cadastrado com successo!");
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+            request.getRequestDispatcher("/admin/index.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("mensagem", e.getLocalizedMessage());
-            request.getRequestDispatcher("erro.jsp").forward(request, response);
+            request.getRequestDispatcher("/erro.jsp").forward(request, response);
         }
     }
 
