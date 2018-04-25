@@ -67,7 +67,7 @@ public class CadastrarConsultaServlet extends HttpServlet {
                 
                 for (Consulta consulta : consultas) {
                     if (consulta.getDataConsulta().equals(dataNovaConsulta)) {
-                        mensagensErro.add("Já existe uma consulta nessa data");
+                        mensagensErro.add("Já existe uma consulta marcada nessa data. Por favor escolha outra data.");
                         break;
                     }
                 }
@@ -75,9 +75,10 @@ public class CadastrarConsultaServlet extends HttpServlet {
                 request.getSession().setAttribute("novaConsulta", ncfb);
                 
                 if (mensagensErro.isEmpty()) {
+                    request.getSession().setAttribute("dataConsulta", dataNovaConsulta);
                     request.getRequestDispatcher("confirmaConsulta.jsp").forward(request, response);
                 } else {
-                    request.setAttribute("erros", mensagensErro);
+                    request.setAttribute("mensagens", mensagensErro);
                     request.setAttribute("medicos", listaMedicos);
                     request.getRequestDispatcher("novaConsulta.jsp").forward(request, response);
                 }

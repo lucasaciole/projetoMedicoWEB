@@ -41,7 +41,9 @@
             <div class="container-login100">
                 <div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-50">
                     <c:if test="${!empty mensagem}">
-                        ${mensagem}
+                        <div align="center">
+                            <p>${mensagem}</p>
+                        </div>
                         <hr>
                     </c:if>
                     <span class="login100-form-title p-b-15">

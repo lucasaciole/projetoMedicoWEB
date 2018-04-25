@@ -40,14 +40,17 @@
             <div class="container-login100">
                 <div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-50">
                     <c:if test="${!empty mensagem}">
-                        ${mensagem}
+                        <div align="center">
+                            <p>${mensagem}</p>
+                        </div>
                         <hr>
                     </c:if>
                     <span class="login100-form-title p-b-15">
                         Painel de Controle
                     </span>
                         <div align="center">
-                            <a href="/ProjetoMedico/admin/cadastroMedicoForm.jsp">Cadastro de Médicos</a> |
+                            <a href='/ProjetoMedico/'> Início </a> |
+                            <a href="/ProjetoMedico/admin/CadastrarMedico">Cadastro de Médicos</a> |
                             <a href="/ProjetoMedico/admin/cadastroPaciente.jsp">Cadastro de Pacientes</a>
                         </div>
                 </div>

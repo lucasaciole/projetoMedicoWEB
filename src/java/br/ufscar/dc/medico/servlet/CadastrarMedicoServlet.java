@@ -6,6 +6,8 @@
 package br.ufscar.dc.medico.servlet;
 
 import br.ufscar.dc.medico.bean.CadastroMedicoFormBean;
+import br.ufscar.dc.medico.bean.Privilegio;
+import br.ufscar.dc.medico.dao.PrivilegioDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -34,26 +36,34 @@ public class CadastrarMedicoServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
-        CadastroMedicoFormBean cmfb = new CadastroMedicoFormBean();
-        try {
-            // Obs: BeanUtils é uma classe da biblioteca
-            // Apache Commons BeanUtils
-            // http://commons.apache.org/beanutils/
-            BeanUtils.populate(cmfb, request.getParameterMap());
-            List<String> mensagens = cmfb.validar();
-            request.getSession().setAttribute("novoMedico", cmfb);
-            if (mensagens == null) {
-                request.getRequestDispatcher("/admin/confirmarMedico.jsp").forward(request, response);
+        Privilegio p = (Privilegio) request.getSession().getAttribute("login");
+        if ((p != null) && (p.getPrivilegio() == PrivilegioDAO.PrivilegioEnum.ADMIN.getValor())) {
+            if (request.getMethod().equalsIgnoreCase("POST")) {
+                CadastroMedicoFormBean cmfb = new CadastroMedicoFormBean();
+                try {
+                    // Obs: BeanUtils é uma classe da biblioteca
+                    // Apache Commons BeanUtils
+                    // http://commons.apache.org/beanutils/
+                    BeanUtils.populate(cmfb, request.getParameterMap());
+                    List<String> mensagens = cmfb.validar();
+                    request.getSession().setAttribute("novoMedico", cmfb);
+                    if (mensagens == null) {
+                        request.getRequestDispatcher("/admin/confirmarMedico.jsp").forward(request, response);
+                    } else {
+                        request.setAttribute("mensagens", mensagens);
+                        request.getRequestDispatcher("/admin/cadastroMedicoForm.jsp").forward(request, response);
+                    }
+                } catch (Exception e) {
+                    System.out.println(e);
+                    System.out.println("mensagem" + e.getLocalizedMessage());
+                    request.setAttribute("mensagem", e.getLocalizedMessage());
+                    request.getRequestDispatcher("/erro.jsp").forward(request, response);
+                }
             } else {
-                request.setAttribute("mensagens", mensagens);
                 request.getRequestDispatcher("/admin/cadastroMedicoForm.jsp").forward(request, response);
             }
-        } catch (Exception e) {
-            System.out.println(e);
-            System.out.println("mensagem" + e.getLocalizedMessage());
-            request.setAttribute("mensagem", e.getLocalizedMessage());
-            request.getRequestDispatcher("erro.jsp").forward(request, response);
+        } else {
+            response.sendRedirect("/ProjetoMedico/login?next=/ProjetoMedico/admin/CadastrarMedico");
         }
     }
 

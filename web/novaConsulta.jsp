@@ -14,7 +14,14 @@
     </head>
     <body>
         <h1>Marcar Consulta</h1>
-        
+        <c:if test="${!empty requestScope.mensagens}">
+            <ul class="erro">
+            <c:forEach items="${requestScope.mensagens}" var="mensagem">
+                <li>${mensagem}</li>
+            </c:forEach>
+            </ul>
+            <hr>
+        </c:if>
         <form action="/ProjetoMedico/novaConsulta" method="POST">
             <input type="hidden" value="${sessionScope.login.login}" name="cpfPaciente"/>
             <select id="medico" name="crmMedico">

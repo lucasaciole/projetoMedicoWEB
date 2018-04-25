@@ -6,6 +6,8 @@
 package br.ufscar.dc.medico.servlet;
 
 import br.ufscar.dc.medico.bean.CadastrarNovoPaciente;
+import br.ufscar.dc.medico.bean.Privilegio;
+import br.ufscar.dc.medico.dao.PrivilegioDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -34,21 +36,30 @@ public class CadastrarPacienteServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        CadastrarNovoPaciente cnp = new CadastrarNovoPaciente();
-        try {
-            BeanUtils.populate(cnp, request.getParameterMap());
-            request.getSession().setAttribute("novoPaciente", cnp);
-            List<String> mensagens = cnp.validar();
-            if (mensagens == null) {
-                request.getRequestDispatcher("confirmarPaciente.jsp").forward(request, response);
+        Privilegio p = (Privilegio) request.getSession().getAttribute("login");
+        if ((p != null) && (p.getPrivilegio() == PrivilegioDAO.PrivilegioEnum.ADMIN.getValor())) {
+            if (request.getMethod().equalsIgnoreCase("POST")) {
+                response.setContentType("text/html;charset=UTF-8");
+                CadastrarNovoPaciente cnp = new CadastrarNovoPaciente();
+                try {
+                    BeanUtils.populate(cnp, request.getParameterMap());
+                    request.getSession().setAttribute("novoPaciente", cnp);
+                    List<String> mensagens = cnp.validar();
+                    if (mensagens == null) {
+                        request.getRequestDispatcher("/admin/confirmarPaciente.jsp").forward(request, response);
+                    } else {
+                        request.setAttribute("mensagens", mensagens);
+                        request.getRequestDispatcher("/admin/cadastroPaciente.jsp").forward(request, response);
+                    }
+                } catch (Exception e) {
+                    request.setAttribute("mensagem", e.getLocalizedMessage());
+                    request.getRequestDispatcher("/erro.jsp").forward(request, response);
+                }
             } else {
-                request.setAttribute("mensagens", mensagens);
-                request.getRequestDispatcher("cadastroPaciente.jsp").forward(request, response);
+                request.getRequestDispatcher("/admin/cadastroPaciente.jsp").forward(request, response);
             }
-        } catch (Exception e) {
-            request.setAttribute("mensagem", e.getLocalizedMessage());
-            request.getRequestDispatcher("500.html").forward(request, response);
+        } else {
+            response.sendRedirect("/ProjetoMedico/login?next=/ProjetoMedico/admin/CadastrarPacienteServlet");
         }
     }
 

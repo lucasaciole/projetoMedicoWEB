@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <!DOCTYPE html>
 <html lang="en">
@@ -40,18 +41,27 @@
 	<div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-50">
+                                <c:if test="${!empty requestScope.mensagens}">
+                                    <div>
+                                        <ul class="erro">
+                                        <c:forEach items="${requestScope.mensagens}" var="mensagem">
+                                            <li>${mensagem}</li>
+                                        </c:forEach>
+                                        </ul>
+                                    </div>
+                                </c:if>
 				<form class="login100-form validate-form" method="POST" action="/ProjetoMedico/login">
 					<span class="login100-form-title p-b-33">
 						Entre com sua conta:
 					</span>
 
-					<div class="wrap-input100">
+					<div class="wrap-input100 validate-input" data-validate="Preencha o login.">
 						<input class="input100" type="text" name="login" placeholder="Usuário">
 						<span class="focus-input100-1"></span>
 						<span class="focus-input100-2"></span>
 					</div>
 
-					<div class="wrap-input100 rs1 validate-input" data-validate="Password is required">
+					<div class="wrap-input100 rs1 validate-input" data-validate="Preencha a senha.">
                                             <input class="input100" type="password" name="senha" placeholder="Senha">
 						<span class="focus-input100-1"></span>
 						<span class="focus-input100-2"></span>
