@@ -62,15 +62,13 @@ public class ListarConsultasServlet extends HttpServlet {
                 ConsultaDAO cdao = new ConsultaDAO(dataSource);
                 // Usuário é Paciente
                 if (p.getPrivilegio() == PrivilegioEnum.PACIENTE.getValor()) {
-                   
                     consultas = cdao.listarConsultasPaciente(p.getLogin());
-                    
                 } else if (p.getPrivilegio() == PrivilegioEnum.MEDICO.getValor()) {
                     consultas = cdao.listarConsultasMedico(p.getLogin());
                 }
 
                 request.setAttribute("consultas", consultas);
-                request.getRequestDispatcher("listaConsultas.jsp").forward(request, response);               
+                request.getRequestDispatcher("/listaConsultas.jsp").forward(request, response);               
             } else {
                 response.sendRedirect("/ProjetoMedico/login");
             }
@@ -78,7 +76,7 @@ public class ListarConsultasServlet extends HttpServlet {
         }   catch(Exception e) {    
             e.printStackTrace();
             request.setAttribute("mensagem", e.getLocalizedMessage());
-            request.getRequestDispatcher("500.html").forward(request, response);
+            request.getRequestDispatcher("/erro.jsp").forward(request, response);
         };
     }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

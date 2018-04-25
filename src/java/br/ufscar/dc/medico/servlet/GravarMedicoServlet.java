@@ -24,7 +24,7 @@ import javax.sql.DataSource;
  *
  * @author 496227
  */
-@WebServlet(name = "GravarMedicoServlet", urlPatterns = {"/GravarMedico"})
+@WebServlet(name = "GravarMedicoServlet", urlPatterns = {"/admin/gravarMedico"})
 public class GravarMedicoServlet extends HttpServlet {
     
     @Resource(name =  "jdbc/MedicoDBLocal")

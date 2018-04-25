@@ -72,11 +72,11 @@ public class GravarPacienteServlet extends HttpServlet {
             PrivilegioDAO pridao = new PrivilegioDAO(dataSource);
             pridao.gravarPrivilegio(pri);
             
-            request.setAttribute("mensagem", "Paciente cadastrado");
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+            request.setAttribute("mensagem", "Paciente cadastrado.");
+            request.getRequestDispatcher("/admin/index.jsp").forward(request, response);
         } catch (Exception e) {
             request.setAttribute("mensagem", e.getLocalizedMessage());
-            request.getRequestDispatcher("500.html").forward(request, response);
+            request.getRequestDispatcher("/erro.jsp").forward(request, response);
         }
     }
 
