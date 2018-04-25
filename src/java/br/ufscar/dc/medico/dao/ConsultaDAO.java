@@ -44,7 +44,7 @@ public class ConsultaDAO {
             + " cpfPaciente, crmMedico, dataConsulta"
             + " from Consulta"
             + " where crmMedico=?"
-            + " and cpfPaciente=?";
+            + " or cpfPaciente=?";
     
     DataSource dataSource;
     
