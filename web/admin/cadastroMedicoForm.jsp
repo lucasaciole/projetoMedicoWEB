@@ -47,7 +47,7 @@
         <div class="limiter">
             <div class="container-login100">
                 <div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-50">
-                    <form class="login100-form validate-form" action="/ProjetoMedico/CadastrarMedico" method ="post">
+                    <form class="login100-form validate-form" action="/ProjetoMedico/admin/CadastrarMedico" method ="post">
                         <h4 align="center">Digite os dados do medico a ser cadastrado</h4>
                         <div class="wrap-input100">
                             <input class="input100" type="text" name="nome" placeholder="Nome" value="${sessionScope.novoMedico.nome}">
@@ -73,6 +73,9 @@
                             <button class="login100-form-btn" type="submit">
                                     Enviar
                             </button>
+                        </div>
+                        <div class="container-login100-form-btn m-t-20">
+                            <a class="login100-form-btn" href="/ProjetoMedico/admin"> Voltar </a>
                         </div>
                 </div>
             </div>

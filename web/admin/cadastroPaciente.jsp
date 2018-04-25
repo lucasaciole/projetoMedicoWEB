@@ -5,8 +5,8 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<!DOCTYPE html>
 <html>
     <head>
 	<title>Cadastro de Paciente - ProjetoMedico</title>
@@ -77,6 +77,9 @@
                             <button class="login100-form-btn" type="submit">
                                     Enviar
                             </button>
+                        </div>
+                        <div class="container-login100-form-btn m-t-20">
+                            <a class="login100-form-btn" href="/ProjetoMedico/admin"> Voltar </a>
                         </div>
                 </div>
             </div>

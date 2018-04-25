@@ -51,7 +51,8 @@
                     </span>
                         <div align="center">
                             <a href="/ProjetoMedico/login">Login</a> |
-                            <a href="/ProjetoMedico/ListarMedicosServlet">Lista de Médicos</a>
+                            <a href="/ProjetoMedico/ListarMedicosServlet">Lista de Médicos</a> |
+                            <a href='/ProjetoMedico/admin'> Painel de Controle</a>
                         </div>
                     <span class="login100-form-title p-t-15 p-b-15">
                         Paciente
