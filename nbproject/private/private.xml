@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/home/bcc/619680/NetBeansProjects/ProjetoMedico/src/java/br/ufscar/dc/medico/servlet/LoginServlet.java</file>
+            <file>file:/home/bcc/619680/NetBeansProjects/ProjetoMedico/src/java/br/ufscar/dc/medico/dao/PacienteDAO.java</file>
+            <file>file:/home/bcc/619680/NetBeansProjects/ProjetoMedico/src/java/br/ufscar/dc/medico/dao/PrivilegioDAO.java</file>
+            <file>file:/home/bcc/619680/NetBeansProjects/ProjetoMedico/web/login.jsp</file>
+            <file>file:/home/bcc/619680/NetBeansProjects/ProjetoMedico/src/java/br/ufscar/dc/medico/bean/CadastroMedicoFormBean.java</file>
+            <file>file:/home/bcc/619680/NetBeansProjects/ProjetoMedico/web/admin/cadastroMedicoForm.jsp</file>
+            <file>file:/home/bcc/619680/NetBeansProjects/ProjetoMedico/src/java/br/ufscar/dc/medico/bean/Privilegio.java</file>
+            <file>file:/home/bcc/619680/NetBeansProjects/ProjetoMedico/web/index.jsp</file>
+            <file>file:/home/bcc/619680/NetBeansProjects/ProjetoMedico/src/java/br/ufscar/dc/medico/servlet/GravarMedicoServlet.java</file>
+            <file>file:/home/bcc/619680/NetBeansProjects/ProjetoMedico/web/admin/confirmarMedico.jsp</file>
+            <file>file:/home/bcc/619680/NetBeansProjects/ProjetoMedico/src/java/br/ufscar/dc/medico/servlet/CadastrarMedicoServlet.java</file>
+            <file>file:/home/bcc/619680/NetBeansProjects/ProjetoMedico/src/java/br/ufscar/dc/medico/dao/MedicoDAO.java</file>
+            <file>file:/home/bcc/619680/NetBeansProjects/ProjetoMedico/src/java/br/ufscar/dc/medico/servlet/AdminServlet.java</file>
+        </group>
+    </open-files>
+</project-private>
