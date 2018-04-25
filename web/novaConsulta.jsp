@@ -27,10 +27,17 @@
             <select id="medico" name="crmMedico">
                 <option value="">Selecione um médico</option>
                 <c:forEach items="${medicos}" var="medico">
-                    <option value="${medico.crm}">${medico.nome}</option>
+                    <c:choose>
+                        <c:when test="${sessionScope.novaConsulta.crmMedico == medico.crm}">
+                            <option value="${medico.crm}" selected>${medico.nome}</option>
+                        </c:when>
+                        <c:otherwise>
+                            <option value="${medico.crm}">${medico.nome}</option>
+                        </c:otherwise>
+                    </c:choose>
                 </c:forEach>
             </select>
-            <input type="date" name="dataConsulta" />
+            <input type="date" name="dataConsulta" value="${sessionScope.novaConsulta.dataConsulta}"/>
             <input type="submit" />
         </form>
         

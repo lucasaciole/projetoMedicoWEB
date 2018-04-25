@@ -57,7 +57,7 @@ public class GravarConsultaServlet extends HttpServlet {
        ConsultaDAO cdao = new ConsultaDAO(dataSource);
               
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-dd-MM");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Date dataNovaConsulta = sdf.parse(ncfb.getDataConsulta());
             
             Consulta c = new Consulta();

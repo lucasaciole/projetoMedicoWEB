@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -17,7 +18,7 @@
         <br/><br/>
         Nome:               ${sessionScope.novoPaciente.nome}<br/>
         CPF:                ${sessionScope.novoPaciente.cpf}<br/>
-        Data de nascimento: ${sessionScope.novoPaciente.dataDeNascimento}<br/>
+        Data de nascimento: <fmt:formatDate value="${sessionScope.novoPaciente.dataDeNascimento}" pattern="dd/MM/yyyy"/><br/>
         Sexo:               ${sessionScope.novoPaciente.sexo}<br/>
         Telefone:           ${sessionScope.novoPaciente.telefone}<br/><br/>
         

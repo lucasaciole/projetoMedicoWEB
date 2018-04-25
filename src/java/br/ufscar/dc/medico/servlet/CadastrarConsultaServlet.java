@@ -60,7 +60,7 @@ public class CadastrarConsultaServlet extends HttpServlet {
                 ConsultaDAO cdao = new ConsultaDAO(dataSource);
                 List<Consulta> consultas = cdao.listarConsultasPacienteEMedico(ncfb.getCrmMedico(),ncfb.getCpfPaciente());
                
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-dd-MM");
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 Date dataNovaConsulta = sdf.parse(ncfb.getDataConsulta());
                 Boolean erro = false;
                 List<String> mensagensErro = ncfb.validar();

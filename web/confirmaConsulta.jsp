@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -17,7 +18,7 @@
         <br/><br/>
         CPF do Paciente: ${sessionScope.novaConsulta.cpfPaciente}<br/>
         CRM do Medico: ${sessionScope.novaConsulta.crmMedico}<br/>
-        Data da Consulta: ${sessionScope.novaConsulta.dataConsulta}<br/>
+        Data da Consulta: <fmt:formatDate value="${sessionScope.dataConsulta}" pattern="dd/MM/yyyy"/><br/>
         
         <br/>
         <a href="/ProjetoMedico/confirmaConsulta">Confirmar</a>
