@@ -45,6 +45,9 @@ public class ConsultaDAO {
             + " from Consulta"
             + " where crmMedico=?"
             + " or cpfPaciente=?";
+    private final static String BUSCAR_TODAS_CONSULTAS_SQL = "select"
+            + " cpfPaciente, crmMedico, dataConsulta"
+            + " from Consulta";
     
     DataSource dataSource;
     
@@ -70,7 +73,7 @@ public class ConsultaDAO {
 
     public Consulta buscarConsulta(int id) throws SQLException, NamingException {
         try (Connection con = dataSource.getConnection();
-                PreparedStatement ps = con.prepareStatement(BUSCAR_CONSULTA_SQL)) {
+            PreparedStatement ps = con.prepareStatement(BUSCAR_CONSULTA_SQL)) {
             ps.setInt(1, id);
 
             try (ResultSet rs = ps.executeQuery()) {
@@ -89,6 +92,25 @@ public class ConsultaDAO {
         try (Connection con = dataSource.getConnection();
             PreparedStatement ps = con.prepareStatement(BUSCAR_CONSULTAS_PACIENTE_SQL)) {
             ps.setString(1, cpf);
+            List<Consulta> consultas = new ArrayList<>();
+            try (ResultSet rs = ps.executeQuery()) {
+                while(rs.next()) {
+                    Consulta c = new Consulta();
+                    c.setCpfPaciente(rs.getString("cpfPaciente"));
+                    c.setCrmMedico(rs.getString("crmMedico"));
+                    c.setDataConsulta(new Date(rs.getDate("dataConsulta").getTime()));
+                    consultas.add(c);
+                }
+            }
+            
+            return consultas;
+        }
+    }
+    
+    public List<Consulta> listarTodasAsConsultas() throws SQLException, NamingException {
+        try (Connection con = dataSource.getConnection();
+            PreparedStatement ps = con.prepareStatement(BUSCAR_TODAS_CONSULTAS_SQL)) {
+
             List<Consulta> consultas = new ArrayList<>();
             try (ResultSet rs = ps.executeQuery()) {
                 while(rs.next()) {

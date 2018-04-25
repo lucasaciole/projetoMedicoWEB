@@ -65,6 +65,8 @@ public class ListarConsultasServlet extends HttpServlet {
                     consultas = cdao.listarConsultasPaciente(p.getLogin());
                 } else if (p.getPrivilegio() == PrivilegioEnum.MEDICO.getValor()) {
                     consultas = cdao.listarConsultasMedico(p.getLogin());
+                } else if (p.getPrivilegio() == PrivilegioEnum.ADMIN.getValor()) {
+                    consultas = cdao.listarTodasAsConsultas();
                 }
 
                 request.setAttribute("consultas", consultas);
