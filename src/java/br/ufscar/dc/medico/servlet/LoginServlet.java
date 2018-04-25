@@ -54,45 +54,53 @@ public class LoginServlet extends HttpServlet {
                 String senha = request.getParameter("senha");
                     
                 if (isNotNullOrBlank(login) && isNotNullOrBlank(senha)) {
-                    String target;
+                    String target = "";
                     String senhaSalva = "";
                     PrivilegioDAO pridao = new PrivilegioDAO(dataSource);
                     Privilegio pri = pridao.buscarPrivilegio(login);
-
-                    if (pri.getPrivilegio() == PrivilegioEnum.PACIENTE.getValor()) {
-                        PacienteDAO pdao = new PacienteDAO(dataSource);
-                        Paciente p = pdao.buscarPaciente(login);
-                        senhaSalva = p.getSenha();
-                    } else if (pri.getPrivilegio() == PrivilegioEnum.MEDICO.getValor()) {
-                        MedicoDAO mdao = new MedicoDAO(dataSource);
-                        Medico m = mdao.buscarMedico(login);
-                        senhaSalva = m.getSenha();
-                    } else if (pri.getPrivilegio() == PrivilegioEnum.ADMIN.getValor()) {
-                        senhaSalva = "crocs";
-                    } else {
-                    }
                     
-                    if (senhaSalva.equals(senha)) {
-                        request.getSession().setAttribute("login", pri);
-                        target = "/ProjetoMedico";
-                        
-                        System.out.println("Login realizado com sucesso: Privilegio " + pri.getPrivilegio());
+                    if (pri != null) {
+                        if (pri.getPrivilegio() == PrivilegioEnum.PACIENTE.getValor()) {
+                            PacienteDAO pdao = new PacienteDAO(dataSource);
+                            Paciente p = pdao.buscarPaciente(login);
+                            senhaSalva = p.getSenha();
+                        } else if (pri.getPrivilegio() == PrivilegioEnum.MEDICO.getValor()) {
+                            MedicoDAO mdao = new MedicoDAO(dataSource);
+                            Medico m = mdao.buscarMedico(login);
+                            senhaSalva = m.getSenha();
+                        } else if (pri.getPrivilegio() == PrivilegioEnum.ADMIN.getValor()) {
+                            senhaSalva = "crocs";
+                        } else {
+                        }
+
+                        if (senhaSalva.equals(senha)) {
+                            request.getSession().setAttribute("login", pri);
+                            target = "/ProjetoMedico";
+
+                            System.out.println("Login realizado com sucesso: Privilegio " + pri.getPrivilegio());
+                        } else {
+                            erros.add("Senha incorreta. Tente novamente.");
+                            request.setAttribute("mensagens", erros);
+                            request.getRequestDispatcher("login.jsp").forward(request, response);
+                            System.out.println("Login incorreto para: " + login);
+                        }
+
+
+                        String next = (String) request.getSession().getAttribute("next");
+                        if (isNotNullOrBlank(next)) {
+                            System.out.println("Redirecionando usuário para: " + next);
+                            request.getSession().removeAttribute("next");
+                            response.sendRedirect(next);
+                        } else if (target != "") {
+                            System.out.println("Terminando fluxo de login em: " + target);
+                            response.sendRedirect(target);
+                        }
+                    
                     } else {
-                        erros.add("Senha incorreta. Tente novamente.");
+                        erros.add("Usuário não encontrado.");
                         request.setAttribute("mensagens", erros);
-                        target = "/ProjetoMedico/login";
-                        System.out.println("Login incorreto para: " + login);
-                    }
-
-
-                    String next = (String) request.getSession().getAttribute("next");
-                    if (isNotNullOrBlank(next)) {
-                        System.out.println("Redirecionando usuário para: " + next);
-                        request.getSession().removeAttribute("next");
-                        response.sendRedirect(next);
-                    } else {
-                        System.out.println("Terminando fluxo de login em: " + target);
-                        response.sendRedirect(target);
+                        System.out.println("Login não encontrado. Retornando usuário para formulário.");
+                        request.getRequestDispatcher("login.jsp").forward(request, response);
                     }
 
                 } else {
@@ -106,6 +114,8 @@ public class LoginServlet extends HttpServlet {
                 String next = request.getParameter("next");
                 if (next != null) {
                     request.getSession().setAttribute("next", next);
+                } else {
+                    request.getSession().removeAttribute("next");
                 }
 
                 request.getRequestDispatcher("login.jsp").forward(request, response);
