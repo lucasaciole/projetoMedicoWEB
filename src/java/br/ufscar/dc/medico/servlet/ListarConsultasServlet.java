@@ -72,7 +72,7 @@ public class ListarConsultasServlet extends HttpServlet {
                 request.setAttribute("consultas", consultas);
                 request.getRequestDispatcher("/listaConsultas.jsp").forward(request, response);               
             } else {
-                response.sendRedirect("/ProjetoMedico/login");
+                response.sendRedirect("/ProjetoMedico/login?next=/ProjetoMedico/listarConsultas");
             }
             
         }   catch(Exception e) {    
