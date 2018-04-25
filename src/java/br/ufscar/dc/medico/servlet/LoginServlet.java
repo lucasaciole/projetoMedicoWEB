@@ -14,6 +14,8 @@ import br.ufscar.dc.medico.dao.PrivilegioDAO;
 import br.ufscar.dc.medico.dao.PrivilegioDAO.PrivilegioEnum;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
@@ -45,50 +47,59 @@ public class LoginServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            String login = request.getParameter("login");
-            String senha = request.getParameter("senha");
             
-            if (isNotNullOrBlank(login) && isNotNullOrBlank(senha)) {
-                String target = "";
-                
-                PrivilegioDAO pridao = new PrivilegioDAO(dataSource);
+            if (request.getMethod().equals("POST")) {
+                List<String> erros = new ArrayList<String>();
+                String login = request.getParameter("login");
+                String senha = request.getParameter("senha");
+                    
+                if (isNotNullOrBlank(login) && isNotNullOrBlank(senha)) {
+                    String target;
+                    String senhaSalva = "";
+                    PrivilegioDAO pridao = new PrivilegioDAO(dataSource);
+                    Privilegio pri = pridao.buscarPrivilegio(login);
 
-                Privilegio pri = pridao.buscarPrivilegio(login);
-                if (pri.getPrivilegio() == PrivilegioEnum.PACIENTE.getValor()) {
-                    PacienteDAO pdao = new PacienteDAO(dataSource);
-                    Paciente p = pdao.buscarPaciente(login);
-
-                    if (p.getSenha().equals(senha)) {
-                        request.getSession().setAttribute("login", pri);
-                        target = "/ProjetoMedico";
-                    }
-
-                } else if (pri.getPrivilegio() == PrivilegioEnum.MEDICO.getValor()) {
-                    MedicoDAO mdao = new MedicoDAO(dataSource);
-                    Medico m = mdao.buscarMedico(login);
-
-                    if (m.getSenha().equals(senha)) {
-                        request.getSession().setAttribute("login", pri);
-                        target = "/ProjetoMedico";
+                    if (pri.getPrivilegio() == PrivilegioEnum.PACIENTE.getValor()) {
+                        PacienteDAO pdao = new PacienteDAO(dataSource);
+                        Paciente p = pdao.buscarPaciente(login);
+                        senhaSalva = p.getSenha();
+                    } else if (pri.getPrivilegio() == PrivilegioEnum.MEDICO.getValor()) {
+                        MedicoDAO mdao = new MedicoDAO(dataSource);
+                        Medico m = mdao.buscarMedico(login);
+                        senhaSalva = m.getSenha();
+                    } else if (pri.getPrivilegio() == PrivilegioEnum.ADMIN.getValor()) {
+                        senhaSalva = "crocs";
                     } else {
-                        
                     }
-                } else if (pri.getPrivilegio() == PrivilegioEnum.ADMIN.getValor()) {
-                    if (senha.equals("crocs")) {
+                    
+                    if (senhaSalva.equals(senha)) {
                         request.getSession().setAttribute("login", pri);
-                        target = "/ProjetoMedico/admin";
+                        target = "/ProjetoMedico";
+                        
+                        System.out.println("Login realizado com sucesso: Privilegio " + pri.getPrivilegio());
+                    } else {
+                        erros.add("Senha incorreta. Tente novamente.");
+                        request.setAttribute("mensagens", erros);
+                        target = "/ProjetoMedico/login";
+                        System.out.println("Login incorreto para: " + login);
                     }
-                }
 
-                System.out.println("Login realizado com sucesso: Privilegio " + pri.getPrivilegio());
-                
-                
-                String next = (String) request.getSession().getAttribute("next");
-                if (isNotNullOrBlank(next)) {
-                    request.getSession().removeAttribute("next");
-                    response.sendRedirect(next);
+
+                    String next = (String) request.getSession().getAttribute("next");
+                    if (isNotNullOrBlank(next)) {
+                        System.out.println("Redirecionando usuário para: " + next);
+                        request.getSession().removeAttribute("next");
+                        response.sendRedirect(next);
+                    } else {
+                        System.out.println("Terminando fluxo de login em: " + target);
+                        response.sendRedirect(target);
+                    }
+
                 } else {
-                    response.sendRedirect(target);
+                    erros.add("Por favor preencha o login corretamente.");
+                    request.setAttribute("mensagens", erros);
+                    System.out.println("Login não preenchido. Retornando usuário para formulário.");
+                    request.getRequestDispatcher("login.jsp").forward(request, response);
                 }
                 
             } else {
@@ -97,12 +108,14 @@ public class LoginServlet extends HttpServlet {
                     request.getSession().setAttribute("next", next);
                 }
 
-                request.getRequestDispatcher("login.jsp").forward(request, response);                
-                System.out.println("Não há parametros para login. Redirecionando para formulário.");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+                System.out.println("Usuário requisitou autenticação. Redirecionando para o formulário de login.");
             }
         } catch (Exception e) {
             System.out.println("Erro: " + e.getLocalizedMessage());
             System.out.println("Durante processo de Login em br.ufscar.dc.medico.servlet.LoginServlet");
+            request.setAttribute("mensagem", "Erro durante o login. Detalhes: " + e.getLocalizedMessage());
+            request.getRequestDispatcher("/erro.jsp").forward(request, response);                
         }
     }
 
