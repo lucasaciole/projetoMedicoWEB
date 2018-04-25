@@ -50,7 +50,14 @@
                         ProjetoMedicoWEB
                     </span>
                         <div align="center">
-                            <a href="/ProjetoMedico/login">Login</a> |
+                            <c:choose>
+                                <c:when test="${empty sessionScope.login}">
+                                    <a href="/ProjetoMedico/login">Login</a> |
+                                </c:when>
+                                <c:otherwise>
+                                    <a href="/ProjetoMedico/logout">Logout</a> |
+                                </c:otherwise>
+                            </c:choose>
                             <a href="/ProjetoMedico/ListarMedicosServlet">Lista de Médicos</a> |
                             <a href='/ProjetoMedico/admin'> Painel de Controle</a>
                         </div>
