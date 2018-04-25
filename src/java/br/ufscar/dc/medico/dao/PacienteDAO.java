@@ -60,17 +60,20 @@ public class PacienteDAO {
             ps.setString(1, cpf);
 
             try (ResultSet rs = ps.executeQuery()) {
-                rs.next();
-                Paciente p = new Paciente();
-                p.setId(rs.getInt("id"));
-                p.setNome(rs.getString("nome"));
-                p.setSenha(rs.getString("senha"));
-                p.setSexo(rs.getString("sexo"));
-                p.setCpf(rs.getString("cpf"));
-                p.setTelefone(rs.getString("telefone"));
-                p.setDataDeNascimento(new Date(rs.getDate("dataDeNascimento").getTime()));
-                return p;
+                if (rs.next()) {
+                    Paciente p = new Paciente();
+                    p.setId(rs.getInt("id"));
+                    p.setNome(rs.getString("nome"));
+                    p.setSenha(rs.getString("senha"));
+                    p.setSexo(rs.getString("sexo"));
+                    p.setCpf(rs.getString("cpf"));
+                    p.setTelefone(rs.getString("telefone"));
+                    p.setDataDeNascimento(new Date(rs.getDate("dataDeNascimento").getTime()));
+                    return p;
+                }
             }
         }
+        
+        return null;
     }
 }

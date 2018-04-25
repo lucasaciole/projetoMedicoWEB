@@ -67,14 +67,17 @@ public class PrivilegioDAO {
             ps.setString(1, login);
 
             try (ResultSet rs = ps.executeQuery()) {
-                rs.next();
-                Privilegio p = new Privilegio();
-                p.setId(rs.getInt("id"));
-                p.setLogin(rs.getString("login"));
-                p.setPrivilegio(rs.getInt("privilegio"));
-                
-                return p;
+                if (rs.next()) {
+                    Privilegio p = new Privilegio();
+                    p.setId(rs.getInt("id"));
+                    p.setLogin(rs.getString("login"));
+                    p.setPrivilegio(rs.getInt("privilegio"));
+
+                    return p;
+                }
             }
         }
+        
+        return null;
     }
 }
