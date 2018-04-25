@@ -38,26 +38,12 @@ public class AdminServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        response.setContentType("text/html;charset=UTF-8");
         Privilegio p = (Privilegio) request.getSession().getAttribute("login");
         if ((p != null) && (p.getPrivilegio() == PrivilegioEnum.ADMIN.getValor())) {
             request.getRequestDispatcher("admin/index.jsp").forward(request, response);
         } else {
-            request.getRequestDispatcher("login.jsp").forward(request, response);
-        }
-        
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet AdminServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet AdminServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            response.sendRedirect("/ProjetoMedico/login?next=/ProjetoMedico/admin");
         }
     }
 
